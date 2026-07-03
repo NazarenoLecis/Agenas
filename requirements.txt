@@ -1,12 +1,16 @@
 pandas
 numpy
 requests
+requests-cache
 beautifulsoup4
 lxml
 openpyxl
 pyarrow
+duckdb
 tqdm
 matplotlib
 plotly
 jupyter
 notebook
+rapidfuzz
+statsmodels
