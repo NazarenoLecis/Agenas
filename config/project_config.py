@@ -1,12 +1,4 @@
-"""
-Configurazione centrale del progetto.
-
-Il repository usa un file Python per la configurazione, senza YAML.
-Gli script importano queste variabili per sapere dove leggere e salvare dati,
-quali fonti trattare e quali regole applicare alle analisi.
-"""
-
-PROJECT_NAME = "agenas"
+PROJECT_NAME = "Agenas"
 
 PATHS = {
     "data_raw": "data/raw",
@@ -48,9 +40,9 @@ QUALITY_SETTINGS = {
 
 SOURCES = [
     {
-        "source_id": "agenas_portale_statistico",
-        "provider": "AGENAS",
-        "dataset_name": "Portale Statistico AGENAS",
+        "source_id": "Agenas_portale_statistico",
+        "provider": "Agenas",
+        "dataset_name": "Portale Statistico Agenas",
         "theme": "portale_statistico",
         "source_page_url": "https://stat.agenas.it/web/index.php?r=site%2Fpublic",
         "download_url_csv": "",
@@ -59,12 +51,12 @@ SOURCES = [
         "access_type": "dashboard",
         "license": "da_verificare",
         "redistribution_allowed": "unclear",
-        "output_subfolder": "agenas/portale_statistico",
+        "output_subfolder": "Agenas/portale_statistico",
         "enabled": False,
     },
     {
-        "source_id": "agenas_pne",
-        "provider": "AGENAS",
+        "source_id": "Agenas_pne",
+        "provider": "Agenas",
         "dataset_name": "Programma Nazionale Esiti",
         "theme": "pne",
         "source_page_url": "https://www.agenas.gov.it/ricerca-e-sviluppo/758-che-cosa-e-pne",
@@ -74,12 +66,12 @@ SOURCES = [
         "access_type": "manual_review",
         "license": "da_verificare",
         "redistribution_allowed": "unclear",
-        "output_subfolder": "agenas/pne",
+        "output_subfolder": "Agenas/pne",
         "enabled": False,
     },
     {
-        "source_id": "agenas_pnla",
-        "provider": "AGENAS",
+        "source_id": "Agenas_pnla",
+        "provider": "Agenas",
         "dataset_name": "Piattaforma Nazionale Liste di Attesa",
         "theme": "liste_attesa",
         "source_page_url": "https://www.portaletrasparenzaservizisanitari.it/piattaforma-nazionale-delle-liste-di-attesa/",
@@ -89,7 +81,7 @@ SOURCES = [
         "access_type": "dashboard",
         "license": "da_verificare",
         "redistribution_allowed": "unclear",
-        "output_subfolder": "agenas/pnla",
+        "output_subfolder": "Agenas/pnla",
         "enabled": False,
     },
     {
@@ -102,7 +94,7 @@ SOURCES = [
         "download_url_json": "",
         "download_url_xml": "",
         "access_type": "web_page",
-        "license": "Italian Open Data License v2.0",
+        "license": "IODL v2.0",
         "redistribution_allowed": "yes",
         "output_subfolder": "ministero_salute/open_data",
         "enabled": False,
