@@ -1,0 +1,4 @@
+verify direct download urls
+run discovery and validation
+map regional sources
+enable sources only after license check
