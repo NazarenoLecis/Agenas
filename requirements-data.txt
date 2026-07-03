@@ -1,4 +1,0 @@
-duckdb
-requests-cache
-rapidfuzz
-statsmodels
