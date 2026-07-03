@@ -54,7 +54,7 @@ Eseguire tutta la pipeline.
 python src/18_full_pipeline.py
 ```
 
-Oppure eseguire i passaggi singoli.
+Passaggi singoli principali.
 
 ```bash
 python src/15_build_catalogs.py
@@ -68,6 +68,7 @@ python src/06_export_json.py
 python src/07_build_charts.py
 python src/16_data_requirements.py
 python src/17_module_inventory.py
+python src/19_data_source_notes.py
 ```
 
 ## Output
