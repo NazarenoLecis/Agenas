@@ -3,7 +3,6 @@ numpy
 requests
 beautifulsoup4
 lxml
-pyyaml
 openpyxl
 pyarrow
 tqdm
