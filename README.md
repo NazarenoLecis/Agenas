@@ -2,7 +2,7 @@
 
 Repository per catalogare, scaricare, normalizzare e analizzare dati pubblici del Servizio sanitario nazionale da fonti istituzionali.
 
-Il progetto integra Agenas, Ministero della Salute, ISTAT, OpenBDAP, AIFA e fonti regionali ufficiali.
+Il progetto integra Agenas, Ministero della Salute, ISTAT, OpenBDAP, AIFA, ISS e fonti regionali ufficiali.
 
 ## Obiettivo
 
@@ -12,7 +12,7 @@ Il repository serve a individuare le fonti disponibili, verificarne licenza e gr
 
 ## Ambiti coperti
 
-Il progetto mappa dati su mobilita sanitaria, personale, tempi di attesa, costi, spesa, prestazioni, emergenza, ricoveri, attivita ospedaliera, assistenza territoriale, dotazioni, strutture, accreditamento, farmaci, demografia e indicatori di esito.
+Il progetto mappa dati su mobilita sanitaria, personale, tempi di attesa, costi, spesa, prestazioni, emergenza, ricoveri, attivita ospedaliera, assistenza territoriale, dotazioni, strutture, accreditamento, farmaci, demografia, sorveglianze ISS, fattori di rischio e indicatori di esito.
 
 ## Metodologia
 
@@ -31,6 +31,7 @@ Il PNE deve essere usato come fonte di indicatori comparativi. Il repository non
 - scrivere commenti estensivi;
 - usare config/project_config.py per la configurazione;
 - non usare file YAML per la configurazione;
+- usare un solo file requirements.txt;
 - creare script per download CSV e JSON;
 - creare notebook per analisi e grafici.
 
@@ -42,12 +43,6 @@ Installare le dipendenze.
 pip install -r requirements.txt
 ```
 
-Per analisi geografiche:
-
-```bash
-pip install -r requirements-geo.txt
-```
-
 Eseguire la pipeline principale.
 
 ```bash
@@ -57,8 +52,10 @@ python src/20_run_all.py
 Script aggiuntivi utili.
 
 ```bash
-python src/21_update_config_from_discovery.py
-python src/22_quality_overview.py
+python src/33_validate_discovered_links.py
+python src/34_dataset_registry.py
+python src/37_source_ranking.py
+python src/23_source_audit.py
 ```
 
 ## Output
