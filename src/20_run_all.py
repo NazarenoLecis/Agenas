@@ -32,7 +32,6 @@ STEPS = [
     "src/07_build_charts.py",
     "src/16_data_requirements.py",
     "src/17_module_inventory.py",
-    "src/19_data_source_notes.py",
     "src/22_quality_overview_v2.py",
     "src/23_source_audit.py",
     "src/25_build_duckdb.py",
