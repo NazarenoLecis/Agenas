@@ -12,6 +12,7 @@ STEPS = [
     "src/15_build_catalogs.py",
     "src/35_regional_sources_seed.py",
     "src/36_clean_column_aliases.py",
+    "src/38_pipeline_check.py",
     "src/00_discover_sources.py",
     "src/33_validate_discovered_links.py",
     "src/34_dataset_registry.py",
