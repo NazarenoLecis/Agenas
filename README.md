@@ -51,7 +51,7 @@ pip install -r requirements-geo.txt
 Eseguire tutta la pipeline.
 
 ```bash
-python src/18_full_pipeline.py
+python src/20_run_all.py
 ```
 
 Passaggi singoli principali.
