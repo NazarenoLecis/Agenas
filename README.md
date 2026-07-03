@@ -59,6 +59,7 @@ Passaggi singoli principali.
 ```bash
 python src/15_build_catalogs.py
 python src/00_discover_sources.py
+python src/21_update_config_from_discovery.py
 python src/01_download_ministero_salute.py
 python src/02_download_Agenas.py
 python src/03_normalize_ministero_salute.py
