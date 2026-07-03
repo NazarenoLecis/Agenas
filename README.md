@@ -48,28 +48,16 @@ Per analisi geografiche:
 pip install -r requirements-geo.txt
 ```
 
-Eseguire tutta la pipeline.
+Eseguire la pipeline principale.
 
 ```bash
 python src/20_run_all.py
 ```
 
-Passaggi singoli principali.
+Script aggiuntivi utili.
 
 ```bash
-python src/15_build_catalogs.py
-python src/00_discover_sources.py
 python src/21_update_config_from_discovery.py
-python src/01_download_ministero_salute.py
-python src/02_download_Agenas.py
-python src/03_normalize_ministero_salute.py
-python src/04_normalize_Agenas.py
-python src/05_build_indicators.py
-python src/06_export_json.py
-python src/07_build_charts.py
-python src/16_data_requirements.py
-python src/17_module_inventory.py
-python src/19_data_source_notes.py
 python src/22_quality_overview.py
 ```
 
