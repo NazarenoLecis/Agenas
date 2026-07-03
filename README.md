@@ -70,6 +70,7 @@ python src/07_build_charts.py
 python src/16_data_requirements.py
 python src/17_module_inventory.py
 python src/19_data_source_notes.py
+python src/22_quality_overview.py
 ```
 
 ## Output
