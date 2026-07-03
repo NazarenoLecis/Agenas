@@ -8,6 +8,14 @@ Il progetto parte da Agenas e integra Ministero della Salute, ISTAT e fonti regi
 
 Costruire una base dati riproducibile per analisi nazionali, regionali e territoriali su capacita ospedaliera, strutture, posti letto, grandi apparecchiature, mobilita sanitaria, liste di attesa, indicatori PNE, assistenza territoriale e accessibilita ai servizi.
 
+## Moduli prioritari
+
+La parte centrale del progetto e la mobilita sanitaria. Serve capire da dove partono i pazienti, dove vanno, per quali prestazioni, con quale valore economico e con quale livello di complessita. La mobilita va distinta tra prestazioni di prossimita, bassa complessita e alta specializzazione.
+
+Gli altri moduli prioritari sono personale sanitario, tempi di attesa, costi, prestazioni, emergenza, ricoveri e attivita ospedaliera.
+
+Per il personale servono distribuzioni di medici per categoria o disciplina, infermieri, operatori socio sanitari e altre professioni. Per le prestazioni servono numero, tipo, territorio, struttura e periodo. Per emergenza servono accessi, triage, tempi, esiti e ricoveri successivi.
+
 ## Metodologia
 
 Ogni analisi deve riportare fonte, anno, livello territoriale, definizione dell'indicatore e limiti del dato.
