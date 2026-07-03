@@ -1,0 +1,17 @@
+project:
+  name: agenas
+
+folders:
+  data_raw: data/raw
+  data_interim: data/interim
+  data_processed: data/processed
+  data_external: data/external
+  metadata: metadata
+  downloads_log: metadata/downloads_log.csv
+  checksums: metadata/checksums
+  data_catalog: data_catalog/data_catalog.csv
+  discovered_links: data_catalog/discovered_links.csv
+  outputs_figures: outputs/figures
+  outputs_tables: outputs/tables
+  outputs_reports: outputs/reports
+  outputs_dashboard: outputs/dashboard_data
