@@ -1,9 +1,9 @@
 """
 Utility per pulizia e normalizzazione.
 
-Le funzioni qui sotto applicano regole semplici: nomi colonna standardizzati,
-spazi rimossi, codici territoriali trattati come stringhe e valori numerici
-convertiti quando possibile.
+Le funzioni applicano regole minime e conservative: nomi colonna standardizzati,
+spazi rimossi, valori mancanti preservati e conversioni numeriche solo quando
+richieste esplicitamente.
 """
 
 import re
@@ -12,30 +12,41 @@ import pandas as pd
 
 def clean_column_name(column_name):
     """
-    Converte un nome colonna in formato semplice snake_case.
+    Converte un nome colonna in snake_case ASCII semplice.
     """
     name = str(column_name).strip().lower()
     name = re.sub(r"[^a-z0-9]+", "_", name)
     name = re.sub(r"_+", "_", name).strip("_")
-    return name
+    return name or "column"
 
 
 def clean_column_names(df):
     """
-    Applica clean_column_name a tutte le colonne del DataFrame.
+    Applica clean_column_name a tutte le colonne e risolve eventuali duplicati.
     """
     df = df.copy()
-    df.columns = [clean_column_name(column) for column in df.columns]
+    seen = {}
+    columns = []
+    for column in df.columns:
+        base_name = clean_column_name(column)
+        count = seen.get(base_name, 0)
+        seen[base_name] = count + 1
+        if count == 0:
+            columns.append(base_name)
+        else:
+            columns.append(f"{base_name}_{count + 1}")
+    df.columns = columns
     return df
 
 
 def strip_string_columns(df):
     """
-    Rimuove spazi iniziali e finali dalle colonne testuali.
+    Rimuove spazi iniziali e finali dalle colonne testuali senza convertire i
+    valori mancanti nella stringa 'nan'.
     """
     df = df.copy()
     for column in df.select_dtypes(include="object").columns:
-        df[column] = df[column].astype(str).str.strip()
+        df[column] = df[column].apply(lambda value: value.strip() if isinstance(value, str) else value)
     return df
 
 
