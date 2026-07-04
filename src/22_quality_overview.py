@@ -9,6 +9,7 @@ from pathlib import Path
 import pandas as pd
 
 from utils_paths import get_project_root, get_configured_path, ensure_project_folders
+from utils_io import write_csv_json_pair
 
 
 def count_files(folder):
@@ -26,8 +27,7 @@ def main():
         folder = get_configured_path(key)
         rows.append({"area": key, "path": str(folder.relative_to(root)), "files": count_files(folder)})
     output_path = get_configured_path("outputs_reports") / "pipeline_quality_overview.csv"
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    pd.DataFrame(rows).to_csv(output_path, index=False)
+    write_csv_json_pair(pd.DataFrame(rows), output_path.parent, output_path.stem)
     print(f"Quality overview written to {output_path}")
 
 
