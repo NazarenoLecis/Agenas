@@ -4,7 +4,6 @@ Script: 38_pipeline_check.py
 Controlla che i file principali della pipeline esistano.
 """
 
-from pathlib import Path
 import pandas as pd
 
 from utils_paths import get_project_root, get_configured_path, ensure_project_folders
@@ -23,6 +22,7 @@ EXPECTED_FILES = [
     "src/25_build_duckdb.py",
     "src/31_build_dimensions.py",
     "src/52_build_health_expenditure_framework.py",
+    "src/54_project_audit.py",
 ]
 
 EXPECTED_OUTPUT_PAIRS = [
@@ -32,6 +32,7 @@ EXPECTED_OUTPUT_PAIRS = [
     "outputs/tables/dataset_registry",
     "outputs/tables/source_ranking",
     "outputs/tables/quality_overview",
+    "outputs/tables/project_audit",
     "outputs/tables/regional_health_expenditure_demographic_adjusted",
 ]
 
@@ -39,7 +40,8 @@ EXPECTED_OUTPUT_PAIRS = [
 def check_expected_files(root):
     rows = []
     for relative_path in EXPECTED_FILES:
-        rows.append({"check_type": "file_exists", "path": relative_path, "exists": (root / relative_path).exists(), "passed": (root / relative_path).exists()})
+        exists = (root / relative_path).exists()
+        rows.append({"check_type": "file_exists", "path": relative_path, "exists": exists, "passed": exists})
     return rows
 
 
