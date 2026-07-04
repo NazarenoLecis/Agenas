@@ -9,13 +9,14 @@ aree riservate e non usa credenziali.
 """
 
 from collections import deque
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urljoin, urlparse, urldefrag
 from datetime import datetime
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
 from utils_paths import get_configured_path, ensure_project_folders, load_project_config
+from utils_io import write_csv_json_pair
 
 
 HEADERS = {"User-Agent": "Agenas-data-analysis/0.1"}
@@ -23,10 +24,28 @@ FILE_EXTENSIONS = [".csv", ".json", ".xml", ".xlsx", ".xls", ".zip", ".pdf", ".o
 KEYWORDS = ["download", "scarica", "dataset", "dati", "csv", "json", "xlsx", "open-data", "open data"]
 MAX_DEPTH = 1
 MAX_PAGES_PER_SOURCE = 25
+SKIP_SCHEMES = {"mailto", "tel", "javascript", "data"}
+
+
+def normalize_url(url):
+    if not isinstance(url, str) or not url:
+        return ""
+    cleaned, _ = urldefrag(url.strip())
+    return cleaned
+
+
+def is_http_url(url):
+    return urlparse(str(url)).scheme in {"http", "https"}
 
 
 def same_domain(url, base_url):
     return urlparse(url).netloc == urlparse(base_url).netloc
+
+
+def should_skip_href(href):
+    if not href:
+        return True
+    return urlparse(href).scheme in SKIP_SCHEMES
 
 
 def classify_link(url, text):
@@ -46,21 +65,27 @@ def fetch_links(page_url):
     links = []
     for link in soup.find_all("a"):
         href = link.get("href")
-        if not href:
+        if should_skip_href(href):
             continue
-        absolute = urljoin(page_url, href)
+        absolute = normalize_url(urljoin(page_url, href))
+        if not is_http_url(absolute):
+            continue
         links.append((absolute, link.get_text(" ", strip=True)))
     return links
 
 
 def discover_source(source):
-    start_url = source.get("source_page_url", "")
+    start_url = normalize_url(source.get("source_page_url", ""))
+    checked_at = datetime.now().isoformat(timespec="seconds")
+    if not start_url or not is_http_url(start_url):
+        return [{"source_id": source.get("source_id"), "provider": source.get("provider"), "page_url": start_url, "found_url": "", "link_text": "", "link_type": "error", "depth": 0, "checked_at": checked_at, "error": "missing_or_invalid_url"}]
+
     queue = deque([(start_url, 0)])
     visited = set()
     rows = []
-    checked_at = datetime.now().isoformat(timespec="seconds")
     while queue and len(visited) < MAX_PAGES_PER_SOURCE:
         page_url, depth = queue.popleft()
+        page_url = normalize_url(page_url)
         if page_url in visited:
             continue
         visited.add(page_url)
@@ -85,8 +110,8 @@ def main():
     for source in config.SOURCES:
         rows.extend(discover_source(source))
     output_path = get_configured_path("outputs_tables") / "recursive_public_discovery.csv"
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    pd.DataFrame(rows).to_csv(output_path, index=False)
+    output = pd.DataFrame(rows).drop_duplicates()
+    write_csv_json_pair(output, output_path.parent, output_path.stem)
     print(f"Recursive discovery written to {output_path}")
 
 
