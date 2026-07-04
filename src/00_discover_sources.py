@@ -5,26 +5,28 @@ Obiettivo
 Leggere le fonti indicate in config/project_config.py, aprire le pagine pubbliche
 e cercare link a file scaricabili.
 
-Come usare
-1. Aggiornare config/project_config.py.
-2. Eseguire python src/00_discover_sources.py dalla radice del repository.
-3. Controllare data_catalog/discovered_links.csv.
-
 Regole
 Lo script usa solo pagine pubbliche. Non accede ad aree riservate.
 """
 
 from datetime import datetime
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-from utils_paths import get_project_root, get_configured_path, load_project_config
+from utils_paths import get_project_root, get_configured_path, load_project_config, ensure_project_folders
+from utils_io import write_csv_json_pair
 
 
 FILE_EXTENSIONS = [".csv", ".json", ".xml", ".xlsx", ".xls", ".zip", ".pdf"]
 HEADERS = {"User-Agent": "Agenas-data-analysis/0.1"}
+SKIP_SCHEMES = {"mailto", "tel", "javascript", "data"}
+
+
+def is_http_url(url):
+    parsed = urlparse(str(url))
+    return parsed.scheme in {"http", "https"}
 
 
 def is_download_link(url):
@@ -33,6 +35,8 @@ def is_download_link(url):
 
 
 def fetch_public_page(url, timeout_seconds=30):
+    if not url or not is_http_url(url):
+        return None, "", "", "missing_or_invalid_url"
     try:
         response = requests.get(url, headers=HEADERS, timeout=timeout_seconds)
         return response.status_code, response.headers.get("content-type", ""), response.text, ""
@@ -65,7 +69,11 @@ def extract_links(source):
         href = link.get("href")
         if not href:
             continue
+        if urlparse(href).scheme in SKIP_SCHEMES:
+            continue
         absolute_url = urljoin(source_url, href)
+        if not is_http_url(absolute_url):
+            continue
         if not is_download_link(absolute_url):
             continue
         clean_url = absolute_url.split("?")[0].split("#")[0]
@@ -101,16 +109,16 @@ def extract_links(source):
 
 
 def main():
+    ensure_project_folders()
     root = get_project_root()
     config = load_project_config()
     output_path = get_configured_path("discovered_links")
     rows = []
     for source in config.SOURCES:
         rows.extend(extract_links(source))
-    df = pd.DataFrame(rows)
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    df.to_csv(output_path, index=False)
-    print(f"Discovery table written to {output_path.relative_to(root)}")
+    df = pd.DataFrame(rows).drop_duplicates()
+    write_csv_json_pair(df, output_path.parent, output_path.stem)
+    print(f"Discovery table written to {output_path.relative_to(root)} and {output_path.with_suffix('.json').relative_to(root)}")
 
 
 if __name__ == "__main__":
