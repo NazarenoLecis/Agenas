@@ -9,16 +9,28 @@ from pathlib import Path
 import pandas as pd
 
 from utils_paths import get_project_root, get_configured_path, ensure_project_folders
+from utils_io import write_csv_json_pair
+
+
+EXCLUDED_PREFIXES = ["utils_"]
+
+
+def is_script_module(path):
+    if path.name.startswith("__"):
+        return False
+    if any(path.name.startswith(prefix) for prefix in EXCLUDED_PREFIXES):
+        return False
+    return path.suffix == ".py"
 
 
 def main():
     ensure_project_folders()
     root = get_project_root()
     src = root / "src"
-    module_files = sorted(src.glob("0*_*.py")) + sorted(src.glob("1*_*.py"))
+    module_files = sorted([path for path in src.glob("*.py") if is_script_module(path)])
     rows = [{"file": path.name, "path": str(path.relative_to(root))} for path in module_files]
     output_path = get_configured_path("outputs_tables") / "module_inventory.csv"
-    pd.DataFrame(rows).to_csv(output_path, index=False)
+    write_csv_json_pair(pd.DataFrame(rows), output_path.parent, output_path.stem)
     print(f"Module inventory written to {output_path}")
 
 
