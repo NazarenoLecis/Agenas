@@ -7,6 +7,7 @@ Crea una tabella seed per mappare fonti regionali sanitarie da completare manual
 import pandas as pd
 
 from utils_paths import get_configured_path, ensure_project_folders
+from utils_io import write_csv_json_pair
 
 
 REGIONS = [
@@ -16,7 +17,7 @@ REGIONS = [
     "Basilicata", "Calabria", "Sicilia", "Sardegna",
 ]
 
-MODULES = ["waiting_times", "services", "emergency", "structures", "workforce", "costs"]
+MODULES = ["waiting_times", "services", "emergency", "structures", "workforce", "costs", "health_expenditure", "demography"]
 
 
 def main():
@@ -34,7 +35,7 @@ def main():
                 "notes": "",
             })
     output_path = get_configured_path("data_catalog").parent / "regional_sources_seed.csv"
-    pd.DataFrame(rows).to_csv(output_path, index=False)
+    write_csv_json_pair(pd.DataFrame(rows), output_path.parent, output_path.stem)
     print(f"Regional source seed written to {output_path}")
 
 
